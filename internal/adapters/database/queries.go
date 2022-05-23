@@ -8,7 +8,147 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
 
-func (dbAdapter Adapter) AddPerson(request models.AddPerson) {
+// -------------------------------------     GET     -------------------------------------
+
+// Test if db is on and if apoc is properly installed
+func (dbAdapter Adapter) GetStatus() error {
+	_, err := dbAdapter.session.WriteTransaction(
+		func(transaction neo4j.Transaction) (interface{}, error) {
+			result, err := transaction.Run(`CALL apoc.create.node(["test"], {});`, nil)
+			if err != nil {
+				return nil, err
+			}
+
+			if result.Next() {
+				return result.Record().Values[0], nil
+			}
+
+			return nil, result.Err()
+		},
+	)
+
+	if err != nil {
+		log.Println("deu ruim")
+		return err
+	}
+
+	return nil
+}
+
+func (dbAdapter Adapter) GetPerson(request models.GetPerson) {
+	values, err := requestToMap(request)
+	if err != nil {
+		return
+	}
+
+	res, err := dbAdapter.session.WriteTransaction(
+		func(transaction neo4j.Transaction) (interface{}, error) {
+			result, err := transaction.Run(
+				`
+				MATCH (n:person) 
+				WHERE id(n) = $id 
+				
+				RETURN {
+					name: n.name, 
+					birth: n.birth
+				}
+				`,
+				values)
+			if err != nil {
+				return nil, err
+			}
+
+			var response []interface{}
+			for result.Next() {
+				response = append(response, result.Record().Values...)
+			}
+
+			if len(response) == 0 {
+				return nil, err
+			}
+
+			return response, nil
+		},
+	)
+
+	if err != nil {
+		log.Printf("deu ruim: %v", err)
+		return
+	}
+
+	log.Println(res)
+}
+
+func (dbAdapter Adapter) GetAscendants(request models.GetAscendants) {
+	values, err := requestToMap(request)
+	if err != nil {
+		return
+	}
+
+	res, err := dbAdapter.session.WriteTransaction(
+		func(transaction neo4j.Transaction) (interface{}, error) {
+			result, err := transaction.Run(
+				`
+				MATCH (origin:person) 
+				WHERE id(origin) = $id
+				
+				MATCH (root:person) 
+				WHERE ((origin)-[:CHILD_OF *..]->(root)) 
+				AND NOT ((root)-[:CHILD_OF]->())
+				
+				MATCH levels = shortestPath((root)-[:PARENT_OF *..]->(origin))
+				
+				CALL apoc.path.subgraphAll(root, {
+						relationshipFilter: 'PARENT_OF>',
+						labelFilter: "+person",
+						minLevel: 0,
+						maxLevel: length(levels)
+				}) YIELD nodes, relationships
+				
+				UNWIND relationships AS relationship
+				WITH nodes, relationship WHERE type(relationship) = "PARENT_OF"
+				
+				UNWIND nodes AS person
+				WITH relationship, person ORDER BY id(person) ASC
+				
+				RETURN {
+						ascendants: COLLECT(DISTINCT 
+								{id: id(person), name: person.name, birth: person.birth}
+						), 
+						relationships: COLLECT(DISTINCT 
+								{parent: id(startNode(relationship)), child: id(endNode(relationship))}
+						)
+				}
+				`,
+				values)
+			if err != nil {
+				return nil, err
+			}
+
+			var response []interface{}
+			for result.Next() {
+				response = append(response, result.Record().Values...)
+			}
+
+			if len(response) == 0 {
+				return nil, err
+			}
+
+			return response, nil
+		},
+	)
+
+	if err != nil {
+		log.Printf("deu ruim: %v", err)
+		return
+	}
+
+	log.Println(res)
+}
+
+// -------------------------------------     POST     -------------------------------------
+
+func (dbAdapter Adapter) PostPerson(request models.PostPerson) {
 	values, err := requestToMap(request)
 	if err != nil {
 		return
@@ -42,7 +182,7 @@ func (dbAdapter Adapter) AddPerson(request models.AddPerson) {
 	log.Println(res)
 }
 
-func (dbAdapter Adapter) AddParentRelationship(request models.AddParentRelationship) {
+func (dbAdapter Adapter) PostParentRelationship(request models.PostParentRelationship) {
 	values, err := requestToMap(request)
 	if err != nil {
 		return
@@ -78,7 +218,9 @@ func (dbAdapter Adapter) AddParentRelationship(request models.AddParentRelations
 	log.Println(res)
 }
 
-func (dbAdapter Adapter) GetAscendants(request models.GetAscendants) {
+// -------------------------------------     DELETE     -------------------------------------
+
+func (dbAdapter Adapter) DelPerson(request models.DelParentRelationship) {
 	values, err := requestToMap(request)
 	if err != nil {
 		return
@@ -88,55 +230,22 @@ func (dbAdapter Adapter) GetAscendants(request models.GetAscendants) {
 		func(transaction neo4j.Transaction) (interface{}, error) {
 			result, err := transaction.Run(
 				`
-				MATCH (origin:person) 
-				WHERE id(origin) = $person
-				
-				MATCH (root:person) 
-				WHERE ((origin)-[:CHILD_OF *..]->(root)) 
-				AND NOT ((root)-[:CHILD_OF]->())
-				
-				MATCH levels = shortestPath((root)-[:PARENT_OF *..]->(origin))
-				
-				CALL apoc.path.subgraphAll(root, {
-						relationshipFilter: 'PARENT_OF>',
-						labelFilter: "+person",
-						minLevel: 0,
-						maxLevel: length(levels)
-				}) YIELD nodes, relationships
-				
-				UNWIND relationships AS edge
-				WITH edge WHERE type(edge) = "PARENT_OF"
-				
-				MATCH (parent:person)-[edge]->(child:person)
-				
-				RETURN {
-						parent: {
-								id: id(parent),
-								name: parent.name,
-								birth: parent.birth
-						}, 
-						child: {
-								id: id(child),
-								name: child.name,
-								birth: child.birth
-						}
-				}
+				MATCH (n:person) WHERE id(n) = $id
+				MATCH (n)-[parent_edge:PARENT_OF]->()
+				MATCH ()-[child_edge:CHILD_OF]->(n)
+
+				DELETE n, child_edge, parent_edge
 				`,
 				values)
 			if err != nil {
 				return nil, err
 			}
 
-			var response []interface{}
-			for result.Next() {
-				response = append(response, result.Record().Values...)
+			if result.Next() {
+				return result.Record().Values[0], nil
 			}
 
-			if len(response) == 0 {
-				return nil, err
-			}
-
-			return response, nil
+			return nil, result.Err()
 		},
 	)
 
@@ -145,8 +254,42 @@ func (dbAdapter Adapter) GetAscendants(request models.GetAscendants) {
 		return
 	}
 
-	if res == nil {
-		log.Println("fazer outra query kkkj")
+	log.Println(res)
+}
+
+func (dbAdapter Adapter) DelParentRelationship(request models.DelParentRelationship) {
+	values, err := requestToMap(request)
+	if err != nil {
+		return
+	}
+
+	res, err := dbAdapter.session.WriteTransaction(
+		func(transaction neo4j.Transaction) (interface{}, error) {
+			result, err := transaction.Run(
+				`
+				MATCH (n:person)-[child_edge:CHILD_OF]->(m:person) 
+				WHERE id(n) = $children AND id(m) = $parent
+				
+				MATCH (m)-[parent_edge:PARENT_OF]->(n)
+				
+				DELETE child_edge, parent_edge
+				`,
+				values)
+			if err != nil {
+				return nil, err
+			}
+
+			if result.Next() {
+				return result.Record().Values[0], nil
+			}
+
+			return nil, result.Err()
+		},
+	)
+
+	if err != nil {
+		log.Printf("deu ruim: %v", err)
+		return
 	}
 
 	log.Println(res)

@@ -16,17 +16,25 @@ type RestPort interface {
 // API
 // Connects Rest to DB
 type APIPort interface {
-	CallTest()
-	CallAddPerson(models.AddPerson)
-	CallAddParentRelationship(models.AddParentRelationship)
+	CallGetStatus() error
+	CallPostPerson(models.PostPerson)
+	CallPostParentRelationship(models.PostParentRelationship)
+	CallDelParentRelationship(models.DelParentRelationship)
+
+	// GET
+	CallGetPerson(models.GetPerson)
 	CallGetAscendants(models.GetAscendants)
 }
 
 // Driven
 
 type DBPort interface {
-	Test()
-	AddPerson(models.AddPerson)
-	AddParentRelationship(models.AddParentRelationship)
+	GetStatus() error
+	PostPerson(models.PostPerson)
+	PostParentRelationship(models.PostParentRelationship)
+	DelParentRelationship(models.DelParentRelationship)
+
+	// GET
+	GetPerson(models.GetPerson)
 	GetAscendants(models.GetAscendants)
 }

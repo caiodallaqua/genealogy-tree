@@ -22,12 +22,16 @@ func (restAdapter Adapter) CreateRouter() *gin.Engine {
 	router := gin.Default()
 
 	// GET
-	router.GET("/status", restAdapter.status)
+	router.GET("/status", restAdapter.getStatus)
+	router.GET("/person", restAdapter.getPersonHandler)
 	router.GET("/ascendants", restAdapter.getAscendantsHandler)
 
 	// POST
-	router.POST("/person", restAdapter.addPersonHandler)
-	router.POST("/parent-relationship", restAdapter.addParentRelationshipHandler)
+	router.POST("/person", restAdapter.postPersonHandler)
+	router.POST("/parent-relationship", restAdapter.postParentRelationshipHandler)
+
+	// DELETE
+	router.DELETE("/parent-relationship", restAdapter.delParentRelationshipHandler)
 
 	return router
 }

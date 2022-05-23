@@ -15,18 +15,32 @@ func NewAdapter(db ports.DBPort) Adapter {
 	}
 }
 
-func (apiAdapter Adapter) CallTest() {
-	apiAdapter.db.Test()
-}
+// -------------------------------------     GET     -------------------------------------
 
-func (apiAdapter Adapter) CallAddPerson(payload models.AddPerson) {
-	apiAdapter.db.AddPerson(payload)
-}
-
-func (apiAdapter Adapter) CallAddParentRelationship(payload models.AddParentRelationship) {
-	apiAdapter.db.AddParentRelationship(payload)
+func (apiAdapter Adapter) CallGetStatus() error {
+	return apiAdapter.db.GetStatus()
 }
 
 func (apiAdapter Adapter) CallGetAscendants(payload models.GetAscendants) {
 	apiAdapter.db.GetAscendants(payload)
+}
+
+func (apiAdapter Adapter) CallGetPerson(payload models.GetPerson) {
+	apiAdapter.db.GetPerson(payload)
+}
+
+// -------------------------------------     POST     -------------------------------------
+
+func (apiAdapter Adapter) CallPostPerson(payload models.PostPerson) {
+	apiAdapter.db.PostPerson(payload)
+}
+
+func (apiAdapter Adapter) CallPostParentRelationship(payload models.PostParentRelationship) {
+	apiAdapter.db.PostParentRelationship(payload)
+}
+
+// -------------------------------------     DELETE     -------------------------------------
+
+func (apiAdapter Adapter) CallDelParentRelationship(payload models.DelParentRelationship) {
+	apiAdapter.db.DelParentRelationship(payload)
 }
