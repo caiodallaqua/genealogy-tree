@@ -11,12 +11,35 @@ func (restAdapter Adapter) status(ctx *gin.Context) {
 	log.Println("42")
 }
 
-func (restAdapter Adapter) newPerson(ctx *gin.Context) {
-	payload, err := deserializeNewPerson(ctx)
+func (restAdapter Adapter) addPersonHandler(ctx *gin.Context) {
+	payload, err := deserializeAddPerson(ctx)
 	if err != nil {
 		return
 	}
 
 	log.Println(payload)
-	restAdapter.api.CallTest()
+
+	restAdapter.api.CallAddPerson(payload)
+}
+
+func (restAdapter Adapter) addParentRelationshipHandler(ctx *gin.Context) {
+	payload, err := deserializeAddParentRelationship(ctx)
+	if err != nil {
+		return
+	}
+
+	log.Println(payload)
+
+	restAdapter.api.CallAddParentRelationship(payload)
+}
+
+func (restAdapter Adapter) getAscendantsHandler(ctx *gin.Context) {
+	payload, err := deserializeGetAscendants(ctx)
+	if err != nil {
+		return
+	}
+
+	log.Println(payload)
+
+	restAdapter.api.CallGetAscendants(payload)
 }

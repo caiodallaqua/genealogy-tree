@@ -8,13 +8,37 @@ import (
 	"genealogy-tree/internal/models"
 )
 
-func deserializeNewPerson(ctx *gin.Context) (models.NewPerson, error) {
+func deserializeAddPerson(ctx *gin.Context) (models.AddPerson, error) {
 	var err error
-	var payload models.NewPerson
+	var payload models.AddPerson
 
 	if err = ctx.Bind(&payload); err != nil {
 		log.Println(err)
-		return models.NewPerson{}, err
+		return models.AddPerson{}, err
+	}
+
+	return payload, nil
+}
+
+func deserializeAddParentRelationship(ctx *gin.Context) (models.AddParentRelationship, error) {
+	var err error
+	var payload models.AddParentRelationship
+
+	if err = ctx.Bind(&payload); err != nil {
+		log.Println(err)
+		return models.AddParentRelationship{}, err
+	}
+
+	return payload, nil
+}
+
+func deserializeGetAscendants(ctx *gin.Context) (models.GetAscendants, error) {
+	var err error
+	var payload models.GetAscendants
+
+	if err = ctx.Bind(&payload); err != nil {
+		log.Println(err)
+		return models.GetAscendants{}, err
 	}
 
 	return payload, nil
