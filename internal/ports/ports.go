@@ -1,6 +1,10 @@
 package ports
 
-import "github.com/gin-gonic/gin"
+import (
+	"genealogy-tree/internal/models"
+
+	"github.com/gin-gonic/gin"
+)
 
 // Driver
 
@@ -13,10 +17,16 @@ type RestPort interface {
 // Connects Rest to DB
 type APIPort interface {
 	CallTest()
+	CallAddPerson(models.AddPerson)
+	CallAddParentRelationship(models.AddParentRelationship)
+	CallGetAscendants(models.GetAscendants)
 }
 
 // Driven
 
 type DBPort interface {
 	Test()
+	AddPerson(models.AddPerson)
+	AddParentRelationship(models.AddParentRelationship)
+	GetAscendants(models.GetAscendants)
 }
