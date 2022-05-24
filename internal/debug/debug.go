@@ -37,27 +37,3 @@ func ShowErr(caller, msg string, err error) {
 		log.Printf("| %s | %s: %v", caller, msg, err)
 	}
 }
-
-// Print context with message and value
-// "{datetime} {message}: {value}"
-func CtxVal(msg, value string) {
-	if msg == "" || value == "" {
-		return
-	}
-
-	if codeEnv == "dev" {
-		log.Printf("%s: %s", msg, value)
-	}
-}
-
-// Print context with message only
-// "{datetime} {message}"
-func Ctx(msg string) {
-	if msg == "" {
-		return
-	}
-
-	if codeEnv == "dev" {
-		log.Printf("%s", msg)
-	}
-}
