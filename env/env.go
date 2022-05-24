@@ -26,7 +26,7 @@ var svcPorts = map[string]string{
 
 var svcProtocols = map[string]string{
 	GENEALOGY_TREE_ADDR: "",
-	DB_ADDR:             "neo4j://",
+	DB_ADDR:             "bolt://",
 }
 
 // Application setup to be injected from main
