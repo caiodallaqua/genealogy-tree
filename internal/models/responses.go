@@ -21,6 +21,12 @@ type RelationData struct {
 
 // ----------------------      GET      ----------------------
 
+type GetStatusRes struct {
+	Data struct {
+		Result string `json:"result" example:"ok"`
+	}
+}
+
 type GetPersonRes struct {
 	Data PersonData
 }
@@ -56,7 +62,7 @@ type PostPersonRes struct {
 
 type PostParentRelationshipRes struct {
 	Data struct {
-		string `example:"ok"`
+		Result string `json:"result" example:"ok"`
 	}
 }
 
@@ -64,12 +70,12 @@ type PostParentRelationshipRes struct {
 
 type DelPersonRes struct {
 	Data struct {
-		string `example:"ok"`
+		Result string `json:"result" example:"ok"`
 	}
 }
 
 type DelParentRelationshipRes struct {
 	Data struct {
-		string `example:"ok"`
+		Result string `json:"result" example:"ok"`
 	}
 }

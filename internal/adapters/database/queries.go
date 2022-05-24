@@ -12,14 +12,11 @@ import (
 
 // Test whether DB is on and if apoc is properly installed
 func (dbAdapter Adapter) GetStatus() (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	res, err := dbAdapter.session.WriteTransaction(
 		func(transaction neo4j.Transaction) (any, error) {
 			result, err := transaction.Run(
 				`
-			CALL apoc.create.node(["test"], {}) 
+			CALL apoc.create.node(["test"], {}) YIELD node
 			RETURN {data: "ok"}
 			`, nil)
 			if err != nil {
@@ -43,9 +40,6 @@ func (dbAdapter Adapter) GetStatus() (any, error) {
 }
 
 func (dbAdapter Adapter) GetPerson(request models.GetPerson) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("GetPerson", "Failed to convert request to map", err)
@@ -88,9 +82,6 @@ func (dbAdapter Adapter) GetPerson(request models.GetPerson) (any, error) {
 }
 
 func (dbAdapter Adapter) GetAscendants(request models.GetAscendants) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("GetAscendants", "Failed to convert request to map", err)
@@ -156,9 +147,6 @@ func (dbAdapter Adapter) GetAscendants(request models.GetAscendants) (any, error
 }
 
 func (dbAdapter Adapter) GetAscendantsAndDescendants(request models.GetAscendantsAndDescendants) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("GetAscendantsAndDescendants", "Failed to convert request to map", err)
@@ -221,9 +209,6 @@ func (dbAdapter Adapter) GetAscendantsAndDescendants(request models.GetAscendant
 }
 
 func (dbAdapter Adapter) GetAscendantsAndChildren(request models.GetAscendantsAndChildren) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("GetAscendantsAndChildren", "Failed to convert request to map", err)
@@ -291,9 +276,6 @@ func (dbAdapter Adapter) GetAscendantsAndChildren(request models.GetAscendantsAn
 // -------------------------------------     POST     -------------------------------------
 
 func (dbAdapter Adapter) PostPerson(request models.PostPerson) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("PostPerson", "Failed to convert request to map", err)
@@ -329,9 +311,6 @@ func (dbAdapter Adapter) PostPerson(request models.PostPerson) (any, error) {
 }
 
 func (dbAdapter Adapter) PostParentRelationship(request models.PostParentRelationship) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("PostParentRelationship", "Failed to convert request to map", err)
@@ -374,9 +353,6 @@ func (dbAdapter Adapter) PostParentRelationship(request models.PostParentRelatio
 // -------------------------------------     DELETE     -------------------------------------
 
 func (dbAdapter Adapter) DelPerson(request models.DelPerson) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("DelPerson", "Failed to convert request to map", err)
@@ -417,9 +393,6 @@ func (dbAdapter Adapter) DelPerson(request models.DelPerson) (any, error) {
 }
 
 func (dbAdapter Adapter) DelParentRelationship(request models.DelParentRelationship) (any, error) {
-	defer dbAdapter.session.Close()
-	defer dbAdapter.driver.Close()
-
 	values, err := requestToMap(request)
 	if err != nil {
 		debug.ShowErr("DelParentRelationship", "Failed to convert request to map", err)

@@ -5,17 +5,17 @@ import "time"
 // ----------------------      BASE      ----------------------
 
 type PersonByID struct {
-	ID uint32 `json:"id" xml:"id" yaml:"id" form:"id" binding:"required"`
+	ID uint32 `json:"id" xml:"id" yaml:"id" form:"id" binding:"required" example:"42"`
 }
 
 type Person struct {
-	Name  string    `json:"name" binding:"required"`
-	Birth time.Time `json:"birth"`
+	Name  string    `json:"name" binding:"required" example:"Aristeu"`
+	Birth time.Time `json:"birth" example:"2020-12-09T16:09:53+00:00"`
 }
 
 type ParentRelationship struct {
-	ParentID uint32 `json:"parent_id" yaml:"parent_id" binding:"required"`
-	ChildID  uint32 `json:"child_id" yaml:"child_id" binding:"required"`
+	ParentID uint32 `json:"parent_id" yaml:"parent_id" binding:"required" example:"1"`
+	ChildID  uint32 `json:"child_id" yaml:"child_id" binding:"required" example:"2"`
 }
 
 // ----------------------      DERIVED      ----------------------

@@ -48,13 +48,13 @@ const docTemplate = `{
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -92,13 +92,13 @@ const docTemplate = `{
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -136,13 +136,13 @@ const docTemplate = `{
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -182,13 +182,13 @@ const docTemplate = `{
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -226,13 +226,13 @@ const docTemplate = `{
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -270,19 +270,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -320,13 +320,13 @@ const docTemplate = `{
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -364,13 +364,42 @@ const docTemplate = `{
                     "422": {
                         "description": "Unprocessable Entity",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/rest.GenTreeError"
+                            "$ref": "#/definitions/models.GenTreeError"
+                        }
+                    }
+                }
+            }
+        },
+        "/status": {
+            "get": {
+                "description": "provides a simple test to ensure that Neo4J is working as expected within the API",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "System"
+                ],
+                "summary": "Health Check Status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.GetStatusRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.GenTreeError"
                         }
                     }
                 }
@@ -386,10 +415,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "child_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 },
                 "parent_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -399,8 +430,9 @@ const docTemplate = `{
                 "data": {
                     "type": "object",
                     "properties": {
-                        "string": {
-                            "type": "string"
+                        "result": {
+                            "type": "string",
+                            "example": "ok"
                         }
                     }
                 }
@@ -413,7 +445,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 42
                 }
             }
         },
@@ -423,10 +456,20 @@ const docTemplate = `{
                 "data": {
                     "type": "object",
                     "properties": {
-                        "string": {
-                            "type": "string"
+                        "result": {
+                            "type": "string",
+                            "example": "ok"
                         }
                     }
+                }
+            }
+        },
+        "models.GenTreeError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "Failed to deserialize. Check request."
                 }
             }
         },
@@ -504,6 +547,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.GetStatusRes": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "result": {
+                            "type": "string",
+                            "example": "ok"
+                        }
+                    }
+                }
+            }
+        },
         "models.PersonData": {
             "type": "object",
             "properties": {
@@ -529,10 +586,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "child_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 },
                 "parent_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -542,8 +601,9 @@ const docTemplate = `{
                 "data": {
                     "type": "object",
                     "properties": {
-                        "string": {
-                            "type": "string"
+                        "result": {
+                            "type": "string",
+                            "example": "ok"
                         }
                     }
                 }
@@ -556,10 +616,12 @@ const docTemplate = `{
             ],
             "properties": {
                 "birth": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2020-12-09T16:09:53+00:00"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Aristeu"
                 }
             }
         },
@@ -587,15 +649,6 @@ const docTemplate = `{
                 "parent_id": {
                     "type": "integer",
                     "example": 2
-                }
-            }
-        },
-        "rest.GenTreeError": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string",
-                    "example": "Failed to deserialize. Check request."
                 }
             }
         }

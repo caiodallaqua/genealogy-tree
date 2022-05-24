@@ -3,8 +3,10 @@ definitions:
   models.DelParentRelationship:
     properties:
       child_id:
+        example: 2
         type: integer
       parent_id:
+        example: 1
         type: integer
     required:
     - child_id
@@ -14,13 +16,15 @@ definitions:
     properties:
       data:
         properties:
-          string:
+          result:
+            example: ok
             type: string
         type: object
     type: object
   models.DelPerson:
     properties:
       id:
+        example: 42
         type: integer
     required:
     - id
@@ -29,9 +33,16 @@ definitions:
     properties:
       data:
         properties:
-          string:
+          result:
+            example: ok
             type: string
         type: object
+    type: object
+  models.GenTreeError:
+    properties:
+      error:
+        example: Failed to deserialize. Check request.
+        type: string
     type: object
   models.GetAscendantsAndChildrenRes:
     properties:
@@ -80,6 +91,15 @@ definitions:
       data:
         $ref: '#/definitions/models.PersonData'
     type: object
+  models.GetStatusRes:
+    properties:
+      data:
+        properties:
+          result:
+            example: ok
+            type: string
+        type: object
+    type: object
   models.PersonData:
     properties:
       birth:
@@ -95,8 +115,10 @@ definitions:
   models.PostParentRelationship:
     properties:
       child_id:
+        example: 2
         type: integer
       parent_id:
+        example: 1
         type: integer
     required:
     - child_id
@@ -106,15 +128,18 @@ definitions:
     properties:
       data:
         properties:
-          string:
+          result:
+            example: ok
             type: string
         type: object
     type: object
   models.PostPerson:
     properties:
       birth:
+        example: "2020-12-09T16:09:53+00:00"
         type: string
       name:
+        example: Aristeu
         type: string
     required:
     - name
@@ -136,12 +161,6 @@ definitions:
       parent_id:
         example: 2
         type: integer
-    type: object
-  rest.GenTreeError:
-    properties:
-      error:
-        example: Failed to deserialize. Check request.
-        type: string
     type: object
 host: localhost:8080
 info:
@@ -172,11 +191,11 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Get Ascendants
       tags:
       - Ascendants / Descendants
@@ -201,11 +220,11 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Get Ascendants and Immediate Children
       tags:
       - Ascendants / Descendants
@@ -230,11 +249,11 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Get Ascendants and Descendants
       tags:
       - Ascendants / Descendants
@@ -260,11 +279,11 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Delete Parent Relationship
       tags:
       - Relation
@@ -289,11 +308,11 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Post Parent Relationship
       tags:
       - Relation
@@ -319,11 +338,11 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Delete Person
       tags:
       - Person
@@ -347,15 +366,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Get Person
       tags:
       - Person
@@ -380,12 +399,32 @@ paths:
         "422":
           description: Unprocessable Entity
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/rest.GenTreeError'
+            $ref: '#/definitions/models.GenTreeError'
       summary: Post Person
       tags:
       - Person
+  /status:
+    get:
+      consumes:
+      - application/json
+      description: provides a simple test to ensure that Neo4J is working as expected
+        within the API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetStatusRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.GenTreeError'
+      summary: Health Check Status
+      tags:
+      - System
 swagger: "2.0"

@@ -46,6 +46,5 @@ func main() {
 	router := restAdapter.CreateRouter()
 	if err = restAdapter.RunRestServer(router); err != nil {
 		log.Printf("| main | Failed to launch rest server: %v", err)
-		return
 	}
 }

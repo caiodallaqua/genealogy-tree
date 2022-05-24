@@ -15,7 +15,7 @@ To run the project, just execute `docker compose up -d` in the project's root fo
 ```json
 {
   "person": {
-    "id": `(unique, auto-generated) positive integer`,
+    "id": "(unique, auto-generated) positive integer",
     "name": "(required) string",
     "birth": "(optional) 2020-12-09T16:09:53+00:00"
   }
@@ -86,9 +86,10 @@ Pattern: Ports & Adapters.
 - Dependencies are injected in `cmd/main.go`. Please avoid importing components directly. When dependency is needed, make sure it happens over abstractions rather than implementations so that the components remain relatively uncoupled.
 - Do not read environment variables directly inside `internal`. This should be done in the `env` package and injected in `cmd/main.go`. One file to rule them all is as good as it gets.
 
-==============================================================================================================
+--------------------------------------------------------------------------------------------------------------
 No thresholds exceeded (cyclomatic_complexity > 4 or length > 1000 or nloc > 1000000 or parameter_count > 100)
-==========================================================================================
+--------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
 Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
 ------------------------------------------------------------------------------------------
       2936      12.4     2.3       76.5       59            0      0.00    0.00

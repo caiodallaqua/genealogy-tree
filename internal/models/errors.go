@@ -1,4 +1,4 @@
-package rest
+package models
 
 type GenTreeError struct {
 	Error string `json:"error" xml:"error" yaml:"error" example:"Failed to deserialize. Check request."`
@@ -13,4 +13,6 @@ var (
 
 	// Usually get requests of resources that do not exist in the DB at that moment.
 	ErrResourceNotFound = GenTreeError{Error: "Resource not found in the database. Check query values."}
+
+	ErrDataInconsistency = GenTreeError{Error: "Inconsistent data provided. Check request values."}
 )

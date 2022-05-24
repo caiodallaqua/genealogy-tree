@@ -10,7 +10,15 @@ import (
 
 // -------------------------------------     GET     -------------------------------------
 
-// Ping DB to health check (maybe)
+// ShowAccount godoc
+// @Summary      Health Check Status
+// @Description  provides a simple test to ensure that Neo4J is working as expected within the API
+// @Tags         System
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.GetStatusRes
+// @Failure      500  {object}  models.GenTreeError
+// @Router       /status [get]
 func (restAdapter Adapter) getStatus(ctx *gin.Context) {
 	var (
 		err        error
@@ -19,7 +27,7 @@ func (restAdapter Adapter) getStatus(ctx *gin.Context) {
 
 	if resPayload, err = restAdapter.api.CallGetStatus(); err != nil {
 		debug.ShowErr("getStatus", "Failed to get status from DB", err)
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 
 		return
 	}
@@ -35,9 +43,9 @@ func (restAdapter Adapter) getStatus(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.GetPersonRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
-// @Failure      400  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
+// @Failure      400  {object}  models.GenTreeError
 // @Router       /person [get]
 func (restAdapter Adapter) getPersonHandler(ctx *gin.Context) {
 	var (
@@ -49,17 +57,17 @@ func (restAdapter Adapter) getPersonHandler(ctx *gin.Context) {
 	)
 
 	if reqPayload, err = deserializeGetPerson(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallGetPerson(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
 	if resPayload == nil {
-		response(ctx, http.StatusBadRequest, ErrResourceNotFound)
+		response(ctx, http.StatusBadRequest, models.ErrResourceNotFound)
 		return
 	}
 
@@ -74,8 +82,8 @@ func (restAdapter Adapter) getPersonHandler(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.GetAscendantsRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
 // @Router       /ascendants [get]
 func (restAdapter Adapter) getAscendantsHandler(ctx *gin.Context) {
 	var (
@@ -87,12 +95,12 @@ func (restAdapter Adapter) getAscendantsHandler(ctx *gin.Context) {
 	)
 
 	if reqPayload, err = deserializeGetAscendants(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallGetAscendants(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
@@ -107,8 +115,8 @@ func (restAdapter Adapter) getAscendantsHandler(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.GetAscendantsAndDescendantsRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
 // @Router       /ascendants-and-descendants [get]
 func (restAdapter Adapter) getAscendantsAndDescendantsHandler(ctx *gin.Context) {
 	var (
@@ -120,12 +128,12 @@ func (restAdapter Adapter) getAscendantsAndDescendantsHandler(ctx *gin.Context) 
 	)
 
 	if reqPayload, err = deserializeGetAscendantsAndDescendants(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallGetAscendantsAndDescendants(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
@@ -140,8 +148,8 @@ func (restAdapter Adapter) getAscendantsAndDescendantsHandler(ctx *gin.Context) 
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.GetAscendantsAndChildrenRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
 // @Router       /ascendants-and-children [get]
 func (restAdapter Adapter) getAscendantsAndChildrenHandler(ctx *gin.Context) {
 	var (
@@ -153,12 +161,12 @@ func (restAdapter Adapter) getAscendantsAndChildrenHandler(ctx *gin.Context) {
 	)
 
 	if reqPayload, err = deserializeGetAscendantsAndChildren(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallGetAscendantsAndChildren(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
@@ -175,8 +183,8 @@ func (restAdapter Adapter) getAscendantsAndChildrenHandler(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      201  {object}  models.PostPersonRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
 // @Router       /person [post]
 func (restAdapter Adapter) postPersonHandler(ctx *gin.Context) {
 	var (
@@ -188,12 +196,12 @@ func (restAdapter Adapter) postPersonHandler(ctx *gin.Context) {
 	)
 
 	if reqPayload, err = deserializePostPerson(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallPostPerson(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
@@ -208,8 +216,8 @@ func (restAdapter Adapter) postPersonHandler(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      201  {object}  models.PostParentRelationshipRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
 // @Router       /parent-relationship [post]
 func (restAdapter Adapter) postParentRelationshipHandler(ctx *gin.Context) {
 	var (
@@ -221,12 +229,17 @@ func (restAdapter Adapter) postParentRelationshipHandler(ctx *gin.Context) {
 	)
 
 	if reqPayload, err = deserializePostParentRelationship(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
+		return
+	}
+
+	if err = checkPostParentRelationshipPayload(reqPayload); err != nil {
+		response(ctx, http.StatusBadRequest, models.ErrDataInconsistency)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallPostParentRelationship(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
@@ -243,8 +256,8 @@ func (restAdapter Adapter) postParentRelationshipHandler(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      201  {object}  models.DelPersonRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
 // @Router       /person [delete]
 func (restAdapter Adapter) delPersonHandler(ctx *gin.Context) {
 	var (
@@ -256,12 +269,12 @@ func (restAdapter Adapter) delPersonHandler(ctx *gin.Context) {
 	)
 
 	if reqPayload, err = deserializeDelPerson(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallDelPerson(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
@@ -276,8 +289,8 @@ func (restAdapter Adapter) delPersonHandler(ctx *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Success      201  {object}  models.DelParentRelationshipRes
-// @Failure      422  {object}  rest.GenTreeError
-// @Failure      500  {object}  rest.GenTreeError
+// @Failure      422  {object}  models.GenTreeError
+// @Failure      500  {object}  models.GenTreeError
 // @Router       /parent-relationship [delete]
 func (restAdapter Adapter) delParentRelationshipHandler(ctx *gin.Context) {
 	var (
@@ -289,12 +302,12 @@ func (restAdapter Adapter) delParentRelationshipHandler(ctx *gin.Context) {
 	)
 
 	if reqPayload, err = deserializeDelParentRelationship(ctx); err != nil {
-		response(ctx, http.StatusUnprocessableEntity, ErrFailedToDeserialize)
+		response(ctx, http.StatusUnprocessableEntity, models.ErrFailedToDeserialize)
 		return
 	}
 
 	if resPayload, err = restAdapter.api.CallDelParentRelationship(reqPayload); err != nil {
-		response(ctx, http.StatusInternalServerError, ErrInternal)
+		response(ctx, http.StatusInternalServerError, models.ErrInternal)
 		return
 	}
 
