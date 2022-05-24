@@ -24,3 +24,13 @@ services:
     environment:
       GENEALOGY_TREE_ADDR: "0.0.0.0"
       DB_ADDR: "neo4j"
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger_ui_container
+    ports:
+        - "8080:8080"
+    volumes:
+        - ./docs:/usr/share/nginx/html/docs
+    environment:
+        API_URL: docs/swagger.yaml

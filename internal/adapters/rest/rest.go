@@ -6,6 +6,9 @@ import (
 
 	"github.com/clbanning/mxj/v2"
 	"github.com/gin-gonic/gin"
+
+	swaggerfiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Adapter struct {
@@ -22,6 +25,8 @@ func NewAdapter(addr string, api ports.APIPort) Adapter {
 
 func (restAdapter Adapter) CreateRouter() *gin.Engine {
 	router := gin.Default()
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// GET
 	router.GET("/status", restAdapter.getStatus)

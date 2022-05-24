@@ -50,7 +50,6 @@ func (dbAdapter Adapter) GetPerson(request models.GetPerson) (any, error) {
 				WHERE id(n) = $id 
 				
 				RETURN {
-					result: "ok",
 					data: {
 						name: n.name, 
 						birth: n.birth
@@ -112,7 +111,6 @@ func (dbAdapter Adapter) GetAscendants(request models.GetAscendants) (any, error
 				WITH relationship, person ORDER BY id(person) ASC
 				
 				RETURN {
-					result: "ok",
 					data: {
 						ascendants: COLLECT(DISTINCT 
 								{id: id(person), name: person.name, birth: person.birth}
@@ -175,7 +173,6 @@ func (dbAdapter Adapter) GetAscendantsAndDescendants(request models.GetAscendant
 				WITH relationship, person ORDER BY id(person) ASC
 				
 				RETURN {
-					result: "ok",
 					data: {
 						ascendants_and_descendants: COLLECT(DISTINCT 
 								{id: id(person), name: person.name, birth: person.birth}
@@ -241,7 +238,6 @@ func (dbAdapter Adapter) GetAscendantsAndChildren(request models.GetAscendantsAn
 				WITH relationship, person ORDER BY id(person) ASC
 				
 				RETURN {
-						result: "ok",
 						data: {
 								ascendants: COLLECT(DISTINCT 
 												{id: id(person), name: person.name, birth: person.birth}
@@ -287,7 +283,7 @@ func (dbAdapter Adapter) PostPerson(request models.PostPerson) (any, error) {
 			result, err := transaction.Run(
 				`
 				MERGE (p:person {name: $name, birth: $birth}) 
-				RETURN {result: "ok", data: {id: id(p)}}
+				RETURN {data: {id: id(p)}}
 				`,
 				values)
 			if err != nil {
@@ -327,7 +323,7 @@ func (dbAdapter Adapter) PostParentRelationship(request models.PostParentRelatio
 				MERGE (n)-[:PARENT_OF]->(m)
 				MERGE (m)-[:CHILD_OF]->(n)
 				
-				RETURN {result: "ok"}
+				RETURN {data: "ok"}
 				`,
 				values)
 			if err != nil {
@@ -369,7 +365,7 @@ func (dbAdapter Adapter) DelPerson(request models.DelPerson) (any, error) {
 
 				DELETE n, child_edge, parent_edge
 
-				RETURN {result: "ok"}
+				RETURN {data: "ok"}
 				`,
 				values)
 			if err != nil {
@@ -409,6 +405,8 @@ func (dbAdapter Adapter) DelParentRelationship(request models.DelParentRelations
 				MATCH (m)-[parent_edge:PARENT_OF]->(n)
 				
 				DELETE child_edge, parent_edge
+
+				RETURN {data: "ok"}
 				`,
 				values)
 			if err != nil {

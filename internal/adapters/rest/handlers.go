@@ -21,6 +21,18 @@ func (restAdapter Adapter) getStatus(ctx *gin.Context) {
 	log.Println("42")
 }
 
+// ShowAccount godoc
+// @Summary      Get Person
+// @Description  get person by ID
+// @Tags         Person
+// @Param        id query uint true "Person ID"
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.GetPersonRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Failure      400  {object}  rest.GenTreeError
+// @Router       /person [get]
 func (restAdapter Adapter) getPersonHandler(ctx *gin.Context) {
 	var (
 		err error
@@ -48,6 +60,17 @@ func (restAdapter Adapter) getPersonHandler(ctx *gin.Context) {
 	response(ctx, http.StatusOK, resPayload)
 }
 
+// ShowAccount godoc
+// @Summary      Get Ascendants
+// @Description  get all ascendants by person ID
+// @Tags         Ascendants / Descendants
+// @Param        id query int true "Person ID"
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.GetAscendantsRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Router       /ascendants [get]
 func (restAdapter Adapter) getAscendantsHandler(ctx *gin.Context) {
 	var (
 		err error
@@ -70,6 +93,17 @@ func (restAdapter Adapter) getAscendantsHandler(ctx *gin.Context) {
 	response(ctx, http.StatusOK, resPayload)
 }
 
+// ShowAccount godoc
+// @Summary      Get Ascendants and Descendants
+// @Description  get all ascendants and descendants by person ID
+// @Tags         Ascendants / Descendants
+// @Param        id query int true "Person ID"
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.GetAscendantsAndDescendantsRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Router       /ascendants-and-descendants [get]
 func (restAdapter Adapter) getAscendantsAndDescendantsHandler(ctx *gin.Context) {
 	var (
 		err error
@@ -92,6 +126,17 @@ func (restAdapter Adapter) getAscendantsAndDescendantsHandler(ctx *gin.Context) 
 	response(ctx, http.StatusOK, resPayload)
 }
 
+// ShowAccount godoc
+// @Summary      Get Ascendants and Immediate Children
+// @Description  give person ID. get all ascendants and children of the leaf ascendants
+// @Tags         Ascendants / Descendants
+// @Param        id query int true "Person ID"
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.GetAscendantsAndChildrenRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Router       /ascendants-and-children [get]
 func (restAdapter Adapter) getAscendantsAndChildrenHandler(ctx *gin.Context) {
 	var (
 		err error
@@ -116,6 +161,17 @@ func (restAdapter Adapter) getAscendantsAndChildrenHandler(ctx *gin.Context) {
 
 // -------------------------------------     POST     -------------------------------------
 
+// ShowAccount godoc
+// @Summary      Post Person
+// @Description  add person given name and optionally birth
+// @Tags         Person
+// @Param        PostPerson body models.PostPerson true "Person data"
+// @Accept       json
+// @Produce      json
+// @Success      201  {object}  models.PostPersonRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Router       /person [post]
 func (restAdapter Adapter) postPersonHandler(ctx *gin.Context) {
 	var (
 		err error
@@ -138,6 +194,17 @@ func (restAdapter Adapter) postPersonHandler(ctx *gin.Context) {
 	response(ctx, http.StatusCreated, resPayload)
 }
 
+// ShowAccount godoc
+// @Summary      Post Parent Relationship
+// @Description  add relationship given two ids (of parent and child)
+// @Tags         Relation
+// @Param        ParentRelationship body models.PostParentRelationship true "Parent relationship data"
+// @Accept       json
+// @Produce      json
+// @Success      201  {object}  models.PostParentRelationshipRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Router       /parent-relationship [post]
 func (restAdapter Adapter) postParentRelationshipHandler(ctx *gin.Context) {
 	var (
 		err error
@@ -162,6 +229,17 @@ func (restAdapter Adapter) postParentRelationshipHandler(ctx *gin.Context) {
 
 // -------------------------------------     DELETE     -------------------------------------
 
+// ShowAccount godoc
+// @Summary      Delete Person
+// @Description  removes person and its relationships given the person id
+// @Tags         Person
+// @Param        DelPerson body models.DelPerson true "Removes person from database"
+// @Accept       json
+// @Produce      json
+// @Success      201  {object}  models.DelPersonRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Router       /person [delete]
 func (restAdapter Adapter) delPersonHandler(ctx *gin.Context) {
 	var (
 		err error
@@ -184,6 +262,17 @@ func (restAdapter Adapter) delPersonHandler(ctx *gin.Context) {
 	response(ctx, http.StatusCreated, resPayload)
 }
 
+// ShowAccount godoc
+// @Summary      Delete Parent Relationship
+// @Description  removes relationship between parent and child given their ids
+// @Tags         Relation
+// @Param        ParentRelationship body models.DelParentRelationship true "Parent relationship"
+// @Accept       json
+// @Produce      json
+// @Success      201  {object}  models.DelParentRelationshipRes
+// @Failure      422  {object}  rest.GenTreeError
+// @Failure      500  {object}  rest.GenTreeError
+// @Router       /parent-relationship [delete]
 func (restAdapter Adapter) delParentRelationshipHandler(ctx *gin.Context) {
 	var (
 		err error

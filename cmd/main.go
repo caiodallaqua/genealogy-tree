@@ -15,7 +15,19 @@ func init() {
 	config = env.NewConfig()
 }
 
+// @title        Genealogy Tree API
+// @version      0.1
+// @description  API for handling person entity and its relationships in a genealogy tree.
+
+// @host      localhost:8080
+// @BasePath  /
+
 func main() {
+	//docs.SwaggerInfo.Title = "Genealogy Tree API"
+	//docs.SwaggerInfo.Host = "localhost:8998"
+	//docs.SwaggerInfo.BasePath = "/docs"
+	//docs.SwaggerInfo.Version = "0.1"
+
 	// Adapters must obey their ports' interfaces.
 	// This allows the internal code to depend mainly
 	// on abstractions rather than concrete implementations.

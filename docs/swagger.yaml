@@ -1,0 +1,391 @@
+basePath: /
+definitions:
+  models.DelParentRelationship:
+    properties:
+      child_id:
+        type: integer
+      parent_id:
+        type: integer
+    required:
+    - child_id
+    - parent_id
+    type: object
+  models.DelParentRelationshipRes:
+    properties:
+      data:
+        properties:
+          string:
+            type: string
+        type: object
+    type: object
+  models.DelPerson:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  models.DelPersonRes:
+    properties:
+      data:
+        properties:
+          string:
+            type: string
+        type: object
+    type: object
+  models.GetAscendantsAndChildrenRes:
+    properties:
+      data:
+        properties:
+          ascendantsAndChildren:
+            items:
+              $ref: '#/definitions/models.PersonData'
+            type: array
+          relationships:
+            items:
+              $ref: '#/definitions/models.RelationData'
+            type: array
+        type: object
+    type: object
+  models.GetAscendantsAndDescendantsRes:
+    properties:
+      data:
+        properties:
+          ascendantsAndDescendants:
+            items:
+              $ref: '#/definitions/models.PersonData'
+            type: array
+          relationships:
+            items:
+              $ref: '#/definitions/models.RelationData'
+            type: array
+        type: object
+    type: object
+  models.GetAscendantsRes:
+    properties:
+      data:
+        properties:
+          ascendants:
+            items:
+              $ref: '#/definitions/models.PersonData'
+            type: array
+          relationships:
+            items:
+              $ref: '#/definitions/models.RelationData'
+            type: array
+        type: object
+    type: object
+  models.GetPersonRes:
+    properties:
+      data:
+        $ref: '#/definitions/models.PersonData'
+    type: object
+  models.PersonData:
+    properties:
+      birth:
+        example: "2020-12-09T16:09:53+00:00"
+        type: string
+      id:
+        example: 42
+        type: integer
+      name:
+        example: Aristeu
+        type: string
+    type: object
+  models.PostParentRelationship:
+    properties:
+      child_id:
+        type: integer
+      parent_id:
+        type: integer
+    required:
+    - child_id
+    - parent_id
+    type: object
+  models.PostParentRelationshipRes:
+    properties:
+      data:
+        properties:
+          string:
+            type: string
+        type: object
+    type: object
+  models.PostPerson:
+    properties:
+      birth:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  models.PostPersonRes:
+    properties:
+      data:
+        properties:
+          id:
+            example: 42
+            type: integer
+        type: object
+    type: object
+  models.RelationData:
+    properties:
+      child_id:
+        example: 4
+        type: integer
+      parent_id:
+        example: 2
+        type: integer
+    type: object
+  rest.GenTreeError:
+    properties:
+      error:
+        example: Failed to deserialize. Check request.
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for handling person entity and its relationships in a genealogy
+    tree.
+  title: Genealogy Tree API
+  version: "0.1"
+paths:
+  /ascendants:
+    get:
+      consumes:
+      - application/json
+      description: get all ascendants by person ID
+      parameters:
+      - description: Person ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAscendantsRes'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Get Ascendants
+      tags:
+      - Ascendants / Descendants
+  /ascendants-and-children:
+    get:
+      consumes:
+      - application/json
+      description: give person ID. get all ascendants and children of the leaf ascendants
+      parameters:
+      - description: Person ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAscendantsAndChildrenRes'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Get Ascendants and Immediate Children
+      tags:
+      - Ascendants / Descendants
+  /ascendants-and-descendants:
+    get:
+      consumes:
+      - application/json
+      description: get all ascendants and descendants by person ID
+      parameters:
+      - description: Person ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetAscendantsAndDescendantsRes'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Get Ascendants and Descendants
+      tags:
+      - Ascendants / Descendants
+  /parent-relationship:
+    delete:
+      consumes:
+      - application/json
+      description: removes relationship between parent and child given their ids
+      parameters:
+      - description: Parent relationship
+        in: body
+        name: ParentRelationship
+        required: true
+        schema:
+          $ref: '#/definitions/models.DelParentRelationship'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.DelParentRelationshipRes'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Delete Parent Relationship
+      tags:
+      - Relation
+    post:
+      consumes:
+      - application/json
+      description: add relationship given two ids (of parent and child)
+      parameters:
+      - description: Parent relationship data
+        in: body
+        name: ParentRelationship
+        required: true
+        schema:
+          $ref: '#/definitions/models.PostParentRelationship'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.PostParentRelationshipRes'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Post Parent Relationship
+      tags:
+      - Relation
+  /person:
+    delete:
+      consumes:
+      - application/json
+      description: removes person and its relationships given the person id
+      parameters:
+      - description: Removes person from database
+        in: body
+        name: DelPerson
+        required: true
+        schema:
+          $ref: '#/definitions/models.DelPerson'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.DelPersonRes'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Delete Person
+      tags:
+      - Person
+    get:
+      consumes:
+      - application/json
+      description: get person by ID
+      parameters:
+      - description: Person ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetPersonRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Get Person
+      tags:
+      - Person
+    post:
+      consumes:
+      - application/json
+      description: add person given name and optionally birth
+      parameters:
+      - description: Person data
+        in: body
+        name: PostPerson
+        required: true
+        schema:
+          $ref: '#/definitions/models.PostPerson'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.PostPersonRes'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/rest.GenTreeError'
+      summary: Post Person
+      tags:
+      - Person
+swagger: "2.0"
