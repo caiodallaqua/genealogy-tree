@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  neo4j:
+    image: neo4j:4.4.7
+    container_name: neo4j
+    ports:
+    - "7474:7474"
+    - "7687:7687"
+    env_file:
+      - .env 
+    volumes:
+      - ./neo4j/data:/data
+      - ./neo4j/logs:/logs
+
+  genealogy-tree:
+    depends_on: 
+      - "neo4j"
+    build: 
+      context: ./
+    container_name: genealogy-tree
+    ports: 
+      - "8998:8998"
+    environment:
+      GENEALOGY_TREE_ADDR: "0.0.0.0"
+      DB_ADDR: "neo4j"
