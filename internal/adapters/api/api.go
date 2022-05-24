@@ -17,7 +17,7 @@ func NewAdapter(db ports.DBPort) Adapter {
 
 // -------------------------------------     GET     -------------------------------------
 
-func (apiAdapter Adapter) CallGetStatus() error {
+func (apiAdapter Adapter) CallGetStatus() (any, error) {
 	return apiAdapter.db.GetStatus()
 }
 

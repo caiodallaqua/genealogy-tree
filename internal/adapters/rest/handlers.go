@@ -1,8 +1,8 @@
 package rest
 
 import (
+	"genealogy-tree/internal/debug"
 	"genealogy-tree/internal/models"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,13 +12,19 @@ import (
 
 // Ping DB to health check (maybe)
 func (restAdapter Adapter) getStatus(ctx *gin.Context) {
-	err := restAdapter.api.CallGetStatus()
+	var (
+		err        error
+		resPayload any
+	)
 
-	if err != nil {
+	if resPayload, err = restAdapter.api.CallGetStatus(); err != nil {
+		debug.ShowErr("getStatus", "Failed to get status from DB", err)
+		response(ctx, http.StatusInternalServerError, ErrInternal)
+
 		return
 	}
 
-	log.Println("42")
+	response(ctx, http.StatusOK, resPayload)
 }
 
 // ShowAccount godoc
