@@ -6,9 +6,9 @@ Backed by Neo4J, the Genealogy Tree API allows for Person entities manipulation 
 
 To run the project, just execute `docker compose up -d` in the project's root folder. This will build three services:
 
-- Genealogy Tree: REST API, available for requests on `localhost:8998`;
+- Genealogy Tree: REST API, available for requests on [localhost:8998](http://localhost:8998);
 - Neo4J: NoSQL Graph Database powered by Cypher (a query language for graphs);
-- Swagger UI: A web interface for documentation at `localhost:8080`, where you can see the available endpoints, their examples and more.
+- Swagger UI: A web interface for documentation at [localhost:8080](http://localhost:8080), where you can see the available endpoints, their examples and more.
 
 ## Data Model
 
