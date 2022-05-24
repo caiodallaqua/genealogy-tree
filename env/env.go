@@ -3,14 +3,15 @@ package env
 import "os"
 
 const (
+	GENEALOGY_TREE_ADDR = "GENEALOGY_TREE_ADDR"
+
 	// -------- CODE ENVIRONMENT ----------
 
 	// dev  -> logs to console
-	// prod -> logs to file
 	CODE_ENV             = "CODE_ENV"
 	CODE_ENV_DEFAULT_VAL = "dev"
 
-	GENEALOGY_TREE_ADDR = "GENEALOGY_TREE_ADDR"
+	// ----------- DATABASE -------------
 
 	DB_ADDR             = "DB_ADDR"
 	DB_USER             = "DB_USER"
@@ -19,11 +20,14 @@ const (
 	DB_PWD_DEFAULT_VAL  = "test"
 )
 
+// Service ports
+// Could be defined by user for applications like port masking, but YAGNI
 var svcPorts = map[string]string{
 	GENEALOGY_TREE_ADDR: "8998",
 	DB_ADDR:             "7687",
 }
 
+// Service protocols
 var svcProtocols = map[string]string{
 	GENEALOGY_TREE_ADDR: "",
 	DB_ADDR:             "bolt://",

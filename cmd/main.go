@@ -1,12 +1,12 @@
 package main
 
 import (
+	"genealogy-tree/env"
 	"genealogy-tree/internal/adapters/api"
 	"genealogy-tree/internal/adapters/database"
 	"genealogy-tree/internal/adapters/rest"
 	"genealogy-tree/internal/ports"
-
-	"genealogy-tree/env"
+	"log"
 )
 
 var config *env.AppConfig
@@ -23,11 +23,6 @@ func init() {
 // @BasePath  /
 
 func main() {
-	//docs.SwaggerInfo.Title = "Genealogy Tree API"
-	//docs.SwaggerInfo.Host = "localhost:8998"
-	//docs.SwaggerInfo.BasePath = "/docs"
-	//docs.SwaggerInfo.Version = "0.1"
-
 	// Adapters must obey their ports' interfaces.
 	// This allows the internal code to depend mainly
 	// on abstractions rather than concrete implementations.
@@ -41,6 +36,7 @@ func main() {
 
 	dbAdapter, err = database.NewAdapter(config.DB.Addr, config.DB.User, config.DB.Pwd)
 	if err != nil {
+		log.Printf("| main | Failed to connect to database: %v", err)
 		return
 	}
 
@@ -48,5 +44,8 @@ func main() {
 	restAdapter = rest.NewAdapter(config.Addr, apiAdapter)
 
 	router := restAdapter.CreateRouter()
-	restAdapter.RunRestServer(router) // see this later, error return
+	if err = restAdapter.RunRestServer(router); err != nil {
+		log.Printf("| main | Failed to launch rest server: %v", err)
+		return
+	}
 }

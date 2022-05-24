@@ -1,6 +1,12 @@
+// Models in responses.go are not used anywhere in the code
+// except for swagger auto-generated docs.
+// DRY only if it helps to make the documentation clearer.
+// Explicit is better than implicit, specially for docs.
 package models
 
 import "time"
+
+// ----------------------      BASE      ----------------------
 
 type PersonData struct {
 	ID    uint32    `json:"id" example:"42"`
@@ -12,6 +18,8 @@ type RelationData struct {
 	ParentID uint32 `json:"parent_id" example:"2"`
 	ChildID  uint32 `json:"child_id" example:"4"`
 }
+
+// ----------------------      GET      ----------------------
 
 type GetPersonRes struct {
 	Data PersonData
@@ -38,6 +46,8 @@ type GetAscendantsAndChildrenRes struct {
 	}
 }
 
+// ----------------------      POST      ----------------------
+
 type PostPersonRes struct {
 	Data struct {
 		ID uint32 `json:"id" example:"42"`
@@ -49,6 +59,8 @@ type PostParentRelationshipRes struct {
 		string `example:"ok"`
 	}
 }
+
+// ----------------------      DELETE      ----------------------
 
 type DelPersonRes struct {
 	Data struct {

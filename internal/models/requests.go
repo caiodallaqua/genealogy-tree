@@ -2,6 +2,8 @@ package models
 
 import "time"
 
+// ----------------------      BASE      ----------------------
+
 type PersonByID struct {
 	ID uint32 `json:"id" xml:"id" yaml:"id" form:"id" binding:"required"`
 }
@@ -16,6 +18,8 @@ type ParentRelationship struct {
 	ChildID  uint32 `json:"child_id" yaml:"child_id" binding:"required"`
 }
 
+// ----------------------      DERIVED      ----------------------
+
 type GetPerson PersonByID
 type GetAscendants PersonByID
 type GetAscendantsAndDescendants PersonByID
@@ -28,8 +32,17 @@ type PostParentRelationship ParentRelationship
 type DelPerson PersonByID
 type DelParentRelationship ParentRelationship
 
+// To avoid repeating code that should work for every request model
 type Request interface {
-	GetPerson | GetAscendants | GetAscendantsAndDescendants | GetAscendantsAndChildren | GetParentRelationship |
-		PostPerson | PostParentRelationship |
-		DelPerson | DelParentRelationship
+	GetPerson |
+		GetAscendants |
+		GetAscendantsAndDescendants |
+		GetAscendantsAndChildren |
+		GetParentRelationship |
+
+		PostPerson |
+		PostParentRelationship |
+
+		DelPerson |
+		DelParentRelationship
 }

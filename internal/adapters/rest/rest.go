@@ -28,18 +28,21 @@ func (restAdapter Adapter) CreateRouter() *gin.Engine {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
-	// GET
+	// ----------------------      GET      ----------------------
+
 	router.GET("/status", restAdapter.getStatus)
 	router.GET("/person", restAdapter.getPersonHandler)
 	router.GET("/ascendants", restAdapter.getAscendantsHandler)
 	router.GET("/ascendants-and-descendants", restAdapter.getAscendantsAndDescendantsHandler)
 	router.GET("/ascendants-and-children", restAdapter.getAscendantsAndChildrenHandler)
 
-	// POST
+	// ----------------------      POST      ----------------------
+
 	router.POST("/person", restAdapter.postPersonHandler)
 	router.POST("/parent-relationship", restAdapter.postParentRelationshipHandler)
 
-	// DELETE
+	// ----------------------      DELETE      ----------------------
+
 	router.DELETE("/person", restAdapter.delPersonHandler)
 	router.DELETE("/parent-relationship", restAdapter.delParentRelationshipHandler)
 
