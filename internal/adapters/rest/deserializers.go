@@ -22,8 +22,10 @@ func deserializeGetPerson(ctx *gin.Context) (models.GetPerson, error) {
 }
 
 func deserializeGetAscendants(ctx *gin.Context) (models.GetAscendants, error) {
-	var err error
-	var payload models.GetAscendants
+	var (
+		err     error
+		payload models.GetAscendants
+	)
 
 	if err = ctx.Bind(&payload); err != nil {
 		debug.ShowErr("deserializeGetAscendants", "Failed to deserialize request payload", err)
@@ -34,8 +36,10 @@ func deserializeGetAscendants(ctx *gin.Context) (models.GetAscendants, error) {
 }
 
 func deserializeGetAscendantsAndDescendants(ctx *gin.Context) (models.GetAscendantsAndDescendants, error) {
-	var err error
-	var payload models.GetAscendantsAndDescendants
+	var (
+		err     error
+		payload models.GetAscendantsAndDescendants
+	)
 
 	if err = ctx.Bind(&payload); err != nil {
 		debug.ShowErr("deserializeGetAscendantsAndDescendants", "Failed to deserialize request payload", err)
@@ -46,8 +50,10 @@ func deserializeGetAscendantsAndDescendants(ctx *gin.Context) (models.GetAscenda
 }
 
 func deserializeGetAscendantsAndChildren(ctx *gin.Context) (models.GetAscendantsAndChildren, error) {
-	var err error
-	var payload models.GetAscendantsAndChildren
+	var (
+		err     error
+		payload models.GetAscendantsAndChildren
+	)
 
 	if err = ctx.Bind(&payload); err != nil {
 		debug.ShowErr("deserializeGetAscendantsAndChildren", "Failed to deserialize request payload", err)
@@ -58,8 +64,10 @@ func deserializeGetAscendantsAndChildren(ctx *gin.Context) (models.GetAscendants
 }
 
 func deserializePostPerson(ctx *gin.Context) (models.PostPerson, error) {
-	var err error
-	var payload models.PostPerson
+	var (
+		err     error
+		payload models.PostPerson
+	)
 
 	if err = ctx.Bind(&payload); err != nil {
 		debug.ShowErr("deserializePostPerson", "Failed to deserialize request payload", err)
@@ -70,11 +78,13 @@ func deserializePostPerson(ctx *gin.Context) (models.PostPerson, error) {
 }
 
 func deserializePostParentRelationship(ctx *gin.Context) (models.PostParentRelationship, error) {
-	var err error
-	var payload models.PostParentRelationship
+	var (
+		err     error
+		payload models.PostParentRelationship
+	)
 
 	if err = ctx.Bind(&payload); err != nil {
-		debug.ShowErr("deserializePostParentRelationship", "Failed to deserialize payload", err)
+		debug.ShowErr("deserializePostParentRelationship", "Failed to deserialize request payload", err)
 		return models.PostParentRelationship{}, err
 	}
 
@@ -82,8 +92,10 @@ func deserializePostParentRelationship(ctx *gin.Context) (models.PostParentRelat
 }
 
 func deserializeDelPerson(ctx *gin.Context) (models.DelPerson, error) {
-	var err error
-	var payload models.DelPerson
+	var (
+		err     error
+		payload models.DelPerson
+	)
 
 	if err = ctx.Bind(&payload); err != nil {
 		debug.ShowErr("deserializeDelPerson", "Failed to deserialize request payload", err)
@@ -94,8 +106,10 @@ func deserializeDelPerson(ctx *gin.Context) (models.DelPerson, error) {
 }
 
 func deserializeDelParentRelationship(ctx *gin.Context) (models.DelParentRelationship, error) {
-	var err error
-	var payload models.DelParentRelationship
+	var (
+		err     error
+		payload models.DelParentRelationship
+	)
 
 	if err = ctx.Bind(&payload); err != nil {
 		debug.ShowErr("deserializeDelParentRelationship", "Failed to deserialize request payload", err)
