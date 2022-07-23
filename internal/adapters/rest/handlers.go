@@ -1,3 +1,5 @@
+//go:generate ./generator.sh GetPerson GetAscendants GetAscendantsAndDescendants GetAscendantsAndChildren PostPerson PostParentRelationship DelPerson DelParentRelationship
+
 package rest
 
 import (

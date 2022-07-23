@@ -127,3 +127,16 @@ Types:
 - style: (commenting, formatting, etc; no production code change)
 
 - test: (missing tests, refactoring tests; no production code change)
+
+**Code Generation**
+
+To generate new deserializers, go to `handlers.go` and insert the new models in the first line. Then run:
+```sh
+go generate -x ./...
+```
+It will trigger `generator.sh` which receives the parameters passed in `handlers.go` to generate the code.  
+An improvement would be to retrieve models names directly from their code definitions.
+
+**Known bugs**
+
+Queries involving ascendants do not work for root nodes. The corresponding cypher queries need a patch to handle such cases.

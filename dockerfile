@@ -1,9 +1,9 @@
-FROM golang:1.18.0-alpine3.14 AS build
+FROM golang:alpine3.15 AS build
 
 COPY . /build
 WORKDIR /build
 
-RUN apk add --no-cache git
+#RUN apk add --no-cache git
 RUN cd cmd && go build -o genealogy-tree
 
 FROM alpine:latest AS final

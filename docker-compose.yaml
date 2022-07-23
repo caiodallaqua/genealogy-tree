@@ -26,7 +26,7 @@ services:
       DB_ADDR: "neo4j"
 
   swagger-ui:
-    image: swaggerapi/swagger-ui
+    image: swaggerapi/swagger-ui:v4.11.0
     container_name: swagger_ui_container
     ports:
         - "8080:8080"
